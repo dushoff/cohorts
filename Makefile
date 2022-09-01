@@ -14,6 +14,7 @@ vim_session:
 Sources += *.md
 Ignore += $(mdpdf_f)
 
+Ignore += notes.pdf
 notes.pdf: notes.md
 	$(xelex_r)
 
