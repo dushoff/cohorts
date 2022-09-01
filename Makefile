@@ -11,6 +11,14 @@ vim_session:
 
 ######################################################################
 
+Sources += *.md
+Ignore += $(mdpdf_f)
+
+notes.pdf: notes.md
+	$(xelex_r)
+
+######################################################################
+
 ### Makestuff
 
 Sources += Makefile
@@ -26,7 +34,7 @@ makestuff/%.stamp:
 
 -include makestuff/os.mk
 
-## -include makestuff/pipeR.mk
+-include makestuff/pandoc.mk
 
 -include makestuff/git.mk
 -include makestuff/visual.mk
