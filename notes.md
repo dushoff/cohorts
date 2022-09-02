@@ -73,4 +73,4 @@ Does it give a good way to think about or calculate things? We can straightforwa
 
 ## Future
 
-I expect whatever we do in continuous time to be translatable to discrete time. I wsa thinking of staying on this side until the concepts are ironed out, since it seems likely that the algebra is simpler. On the other hand, I could imagine switching to the discrete side if things get confusing in a way that makes us want to test ourselves with simple simulations (or with MacPan itself).
+I expect whatever we do in continuous time to be translatable to discrete time. I was thinking of staying on this side until the concepts are ironed out, since it seems likely that the algebra is simpler. On the other hand, I could imagine switching to the discrete side if things get confusing in a way that makes us want to test ourselves with simple simulations (or with MacPan itself).
