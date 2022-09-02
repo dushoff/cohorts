@@ -38,7 +38,7 @@ with moments
 
 $$k_n = Γ(n+1)/V^n.$$
 
-In particular, the mean $mu_k=k_1 = 1/V$, and the squared CV $κ_k = k_2/k_1^2 - 1 = 1$.
+In particular, the mean $\mu_k=k_1 = 1/V$, and the squared CV $κ_k = k_2/k_1^2 - 1 = 1$.
 
 ## Continuous-time with compartments
 
