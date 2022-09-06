@@ -42,6 +42,12 @@ In particular, the mean $\mu_k=k_1 = 1/V$, and the squared CV $κ_k = k_2/k_1^2 
 
 ## Continuous-time with compartments
 
+### Assumptions and construction
+
+We start with a rate matrix $M$, this gives the _per capita_ rate of flow between any two boxes in our model. We distinguish uninfected, initial (infected), and non-initial (infected) compartments. Defining these precisely is boring, but could be useful; let's talk about it. For invasion analysis, we are only interested in flows into and out of infected compartments: flows between infected and uninfected are assumed to be negligible from the point of view of the uninfected compartment, and flows from uninfected to uninfected are assumed to start at and stay near disease-free equilibrium values, and thus balance: we call the matrix of the flows we are planning to ignore $U$. Flows between infected compartments are assumed to have a constant rate: this is the $V$ matrix. Flows from uninfected to infected are assumed to happen at a rate given by a force of infection
+
+### Parallel calculation
+
 The initial cohort of infectees $I_0$ is now an $i×1$ column vector, where $i$ is the number of initial-infection boxes.
 To model flow through the $c$ infected compartments (containing individuals who can infect without infecting again), we multiply by a $c×i$ “expansion matrix” $X$, with 1s on the main diagonal and 0s elsewhere.
 
