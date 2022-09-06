@@ -18,6 +18,9 @@ Ignore += notes.pdf
 notes.pdf: notes.md
 	$(xelex_r)
 
+bb_notes.pdf: bb_notes.md
+	$(xelex_r)
+
 ######################################################################
 
 ### Makestuff
