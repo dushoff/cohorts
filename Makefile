@@ -21,6 +21,9 @@ notes.pdf: notes.md
 bb_notes.pdf: bb_notes.md
 	$(xelex_r)
 
+sw_notes.pdf: sw_notes.md
+	$(xelex_r)
+
 ######################################################################
 
 ### Makestuff
