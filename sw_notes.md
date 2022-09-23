@@ -177,6 +177,236 @@ The V-matrix is a more complex function of $s$ with four components.
     * This is the per-captia rate of flow into the $i$th infected compartment from the $k$th infected compartment
     * ... FIXME -- this list is complex and incomplete -- not sure how useful it is
 
+\newpage
+
+## Interpretation
+
+$\mathcal{R}_0$ is the spectral radius of $FV^{-1}$, where F and V are square matrices with rows and columns representing infected individuals and elements given by the following.
+
+$$
+F_{ik} = 
+\underbrace{\sum_{j\in\Omega} \mathcal{T}_{jik} s_j}_{
+    \text{infection (non-linear)}
+}
+$$
+
+and
+
+$$
+\begin{array}{rl}
+  V_{ik} = & \underbrace{\delta_{ik} \sum_{j\in\Omega} M_{ij}}_{
+    \text{recovery (linear)}
+  } \\
+  & \underbrace{+ \sum_{j\in\Omega} \mathcal{T}_{ijk} s_{i}}_{
+    \text{recovery (non-linear)}
+  } \\
+& \underbrace{+ \delta_{ik} \sum_{j\notin\Omega}  M_{ij} - M_{ki}}_{
+    \text{progression/behaviour (linear)}
+} \\
+& \underbrace{+ \sum_{j\notin\Omega} \left(
+    \mathcal{T}_{ijk} s_{i}
+   - \mathcal{T}_{jik} s_{j}
+   \right)}_{
+    \text{progression/behaviour (non-linear)}
+} \\
+\end{array}
+$$
+
+Where $\mathcal{T}_{ijk} = \frac{dM_{ij}}{ds_k}$, evaluated at a disease-free equilibrium, $\delta_{ik} = 1$ if $i = k$ and zero otherwise, and $\Omega$ is the set of all indices associated with non-infected states. Throughout this section, $i$ and $k$ index  infected compartments and $j$ indexes any compartment -- whether $j$ is infected or not is indicated by its relation to the set of non-infected compartments, $\Omega$.
+
+Why is there no such thing as linear infection? Intuitively it is because infection involves a contact between an individual inside $\Omega$ (non-infected) with one outside of $\Omega$ (infected). Recall that the linear and non-linear contributions to $F$ are as follows.
+
+$$
+F_{ik} = 
+\underbrace{\sum_{j\in\Omega} s_{j}\frac{dM_{ji}}{ds_k}}_{\text{non-linear}}   +
+\underbrace{\sum_{j\in\Omega} M_{ji} \frac{ds_{j}}{ds_k}}_{\text{linear}}
+$$
+
+Here $s_j$ is not infected and $s_k$ is infected. The linear term contains the derivative of one with respect to the other. This derivative is either zero if the two states are different (which they must be) or one if the two states are the same (which they cannot be). Therefore, the $F$ matrix cannot have a linear component and infection is an inherently non-linear process.
+
+\newpage
+
+## SIR
+
+For the SIR model we have three states, S, I, and R, which become $s_1, s_2, s_3$ respectively in our formalism.  The per-capita rate matrix for this model is given by the following.
+
+$$
+M = \begin{bmatrix}
+0 & \beta I & 0 \\
+0 & 0 & \gamma \\
+0 & 0 & 0 \\
+\end{bmatrix}
+= \begin{bmatrix}
+0 & \beta s_2 & 0 \\
+0 & 0 & \gamma \\
+0 & 0 & 0 \\
+\end{bmatrix}
+$$
+
+In this case $F$ and $V$ are 1-by-1 matrices because $\Omega = \{1, 3\}$, and so 2 is the only index associated with an infected state. The derivative of $M$ is a 3-by-3-by-3 per-capita rate tensor with almost all zeros, except for one element, $\mathcal{T}_{122} = \beta$. This element is the derivative of $M_{12} = \beta s_2$ with respect to $s_2$
+
+For this model we only have non-linear infection and linear recovery.
+
+$$
+F_{22} = \sum_{j\in\Omega} \mathcal{T}_{jik} s_j = \mathcal{T}_{122} s_1 = \beta s_1
+$$
+
+$$
+V_{22} = \delta_{ik} \sum_{j\in\Omega} M_{ij} = M_{23} = \gamma
+$$
+
+At a disease-free equilibrium of $s_1 = 1$, $s_2 = s_3 = 0$, we have $F_{22} = \beta$ and $V_{22} = \gamma$, which leads to $\mathcal{R}_0 = \beta/\gamma$ as expected.
+
+
+\newpage
+
+## Disease-Free Equilibrium
+
+Until this point we have assumed that we can find a disease-free equilibrium, but this is not trivial.
+
+At equilibrium the inflows equal the outflows
+$$
+\underbrace{\sum_j M_{ji} s_{j}}_{\text{inflow}} = \underbrace{s_{i} \sum_j  M_{ij} }_{\text{outflow}}
+$$
+
+Rearranging we see that at equilibrium each element of the state vector is a weighted sum of the others with weights given by the weight matrix.
+$$
+s_{i} = \frac{\sum_j M_{ji} s_{j}}{\sum_j  M_{ij}}
+$$
+
+This equation looks vaguely like it could be solved as an eigenvector problem, but some elements of $M$ will depend on some elements of $s$. Nevertheless we could try an iterative power-method-like approach to solving this equation. The initial value of the state vector could be the following.
+
+$$
+s^0_i = \begin{array}{ll}
+0, & i \notin\Omega' \\
+1/|\Omega'|, & i\in\Omega' \\
+\end{array}
+$$
+
+Where $\Omega'$ is a subset of $\Omega$ containing only individuals that have never been infected (i.e. pre-infected classes that are not recovered, not dead, and not infected). This initial value is a disease-free point, but it is unlikely to be a fixed point.
+
+Finding a disease-free fixed point would be easier if states that are not in $\Omega'$ start at zero, stay at zero. The relevant sub-matrix of $M$ involves rows on $\Omega'$ and columns that are not on $\Omega'$. If we evaluate this sub-matrix at $s^0_i$ and get a matrix with all zeros, then we can simplify the update equation.
+
+$$
+s_{i} = \frac{
+    \sum_{j\in\Omega'} M_{ji} s_{j}
+}{
+    \sum_{j\in\Omega'} M_{ij}
+}
+$$
+
+Such that $i\in\Omega'$.
+
+One might be tempted to try to automatically determine $\Omega'$ with graph theory, but such approaches would break down in some models (e.g. those with wanning immunity).
+
+However, one thing that we could do automatically is to automatically differentiate the sub-matrix of $M$ that goes between pre-infected states, and if we get all zeros then we would know that the solution of the update equation is an eigenvector of the transpose of the matrix with elements given by the following equation.
+
+$$
+\frac{M_{ki}}{\sum_{j\in\Omega'} M_{ij}}
+$$
+
+This would be a situation where the pre-infected sub-model is linear. This is a reason to build up your model by starting with a pre-infected sub-model, because this would make it straightforward to compute the disease-free equilibrium.
+
+## Operations on Model Space
+
+Defining the different sets described above would seem difficult for a general and complex model. However, if we build up our model from component sub-models using operations on model space, the task should in principle become simpler.
+
+For example, we could define an SEIR model in an abstract way with the following equation.
+
+```
+SEIR = S + EI + R
+```
+
+Here the `+` operator is defined on model space and is not the ordinary arithmetic plus. If we build our model like this in terms of the three component sub-models -- `S`, `EI`, and `R` -- we can recognize right away that these sub-models correspond to the pre-infected, infected, and post-infected sets. From this point, we can build up each component by multiplying by various structural sub-models (e.g. vaccination status, age, space).
+
+```
+SEIR * AGE = S * AGE + EI * AGE + R * AGE
+```
+
+In this way, we can easily identify the pre-infected sub-model as `S * AGE`, which could then easily be used to compute the disease-free equilibrium with the equations in the section above.
+
+This process could get even better if we introduced specific kinds of plus operators that guaranteed that sub-models that come first will never flow to sub-models that come later in the sum, unless the starting values are not zero.
+
+The key partitioning of the states includes the following subsets.
+
+* pre-infected -- $\Omega'$
+* infected -- $\not{\Omega}$
+* post-infected -- $\Omega - \Omega'$
+
+
+\newpage
+
+## Block Matrix Approach
+
+The rate matrix can be arranged in the following blocks.
+
+$$
+M = \begin{bmatrix}
+M^{I,I} & M^{I,U} \\
+M^{U,I} & M^{U,U} \\
+\end{bmatrix}
+$$
+
+When the following definitions of the blocks.
+
+* $M^{I,I}$ -- per-capita rates from each infected state to another
+* $M^{I,U}$ -- per-capita rates from infected states to uninfected states
+* $M^{U,I}$ -- per-capita rates from uninfected states to infected states
+* $M^{U,U}$ -- per-capita rates from each uninfected state to another
+
+We express the element in the $k$th row and $l$th column in the block in the $i$th block-row and $j$th block-column as $M_{i[k]j[l]}$. For example, the per-capita rate of transition from the third infected state to the second uninfected state is $M_{I[3]U[2]}$
+
+Similarly we decompose the state vector in the following way.
+
+$$
+s = \begin{bmatrix}
+s^I \\ s^U
+\end{bmatrix}
+$$
+
+Similarly, the element in the $k$th element of the $i$th block of this block vector is $s_{i[k]}$.
+
+With this notation we can reexpress the rates of transition from uninfected states to the $k$th infected state as the following.
+
+$$
+f^\text{infection}_k = \underbrace{
+    \sum_l M_{U[l]I[k]}s_{U[l]}
+}_{\text{inflow from U to I}}
+$$
+
+The rates out of the $k$th infectious class by mechanisms other than infection can be given by the following.
+
+$$
+f^\text{other}_k = 
+\underbrace{s_{I[k]}\sum_l M_{I[k]I[l]}}_{\text{outflow from I to I}} + 
+\underbrace{s_{I[k]}\sum_l M_{I[k]U[l]}}_{\text{outflow from I to U}}
+- \underbrace{\sum_l M_{I[l]I[k]}s_{I[l]}}_{\text{inflow from I to I}}
+$$
+
+Alternative notation:
+
+$$
+f^\text{infection}_k = \underbrace{
+    \sum_l M^{UI}_{lk}s^U_l
+}_{\text{inflow from U to I}}
+$$
+
+
+$$
+f^\text{other}_k = 
+\underbrace{s^I_k\sum_l M^{II}_{kl}}_{\text{outflow from I to I}} + 
+\underbrace{s^I_k\sum_l M^{IU}_{kl}}_{\text{outflow from I to U}} -
+\underbrace{\sum_l M^{II}_{lk} s^I_l}_{\text{inflow from I to I}}
+$$
+
+With these definitions the dynamics of infected states can be expressed as.
+
+$$
+\frac{ds^I_k}{dt} = f_k^{\text{infection}} - f_k^{\text{other}}
+$$
+
+
+
 ## Next Steps
 
 * Work on the notation
