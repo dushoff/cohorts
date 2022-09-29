@@ -1,3 +1,17 @@
+---
+title: SW Notes
+author: \Large SW
+date: ...
+header-includes:
+   - \usepackage[margin=0.9in]{geometry}
+   - \usepackage{color}
+   - \usepackage{lineno}
+---
+
+\renewcommand{\thelinenumber}{\color{cyan}\arabic{linenumber}}
+\large
+\linenumbers
+
 # SW Notes
 
 These are notes on deriving the next-gen-mat framework from the macpan framework. There are likely many notational issues and possibly actual errors.
