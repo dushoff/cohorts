@@ -420,9 +420,24 @@ $$
 $$
 
 
+## Discussion with David E 2022-09-29
+
+* Validation of the general idea that computing the disease free equilibrium will be much simpler than any endemic equilibrium in many cases
+  * Sufficient conditions under which this is true -- I think these:
+    * Infected classes that start at zero, stay at zero in disease-free cases (this could be violated with a environmental source of infection for example) -- we think that this is equivalent to simpler asserting that there exists at least one disease-free equilibrium
+    * The elements of the sub-matrix of M that contains only susceptible compartments do not depend on the state of susceptible compartments -- i.e. linearity
+    * This sub-matrix of M is not degenerate in a linear algebra sense (whatever the right word is here 'non-singular', 'full-rank', I don't know but I know it is well-known)
+  * Sufficiency is more relevant to Steve than necessity, because I'm not trying to push the limits of knowledge in mathematical biology -- instead I just want a clear way to distinguish models for which R_0 is algorithmically easy to compute and those for which it is probably difficult -- we just want solid software given a simple but powerful framework based on standard well-understood theory
+  * Examples where the sufficiency breaks down:
+    * Environmental source of infection (e.g. contact with an infectious individual is not required for infection)
+    * Two diseases such that you want the R_0 for a focal disease under an endemic equilibrium of another disease -- this case is hard because the focal-disease-free equilibrium is not likely to be linear given that the other disease will likely involve non-linear contact processes
+* In general pay more attention to uniqueness and existence of disease free equilibria
+  * SIR is a bad example because it does not have a unique DFE (e.g. vital dynamics, SIRS)
+* In general give more examples that illustrate why the framework is useful
+
 
 ## Next Steps
 
-* Work on the notation
+* Work on the notation using David's suggestions (https://davidearn.github.io/math4mb/lectures/4mbl06_2019f.pdf, de_notes.md) and reading original references to be consistent with those
 * Work on the interpretation of the V-matrix
 * Convert to discrete time
