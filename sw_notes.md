@@ -435,6 +435,11 @@ $$
   * SIR is a bad example because it does not have a unique DFE (e.g. vital dynamics, SIRS)
 * In general give more examples that illustrate why the framework is useful
 
+## Discussion with JD 2022-10-06
+
+* We agreed that we should define the matrix that gives the change in the state vector when it is multiplied by the state vector, and work out the above derivations in terms of that matrix instead of the 'classic macpan rate matrix' as it is above
+* We will modify macpan (probably macpan2) to be based on this new matrix
+* We should start doing experiments in simple models to test our intuition and math on DFEs and next-gen matrix stuff
 
 ## Next Steps
 
